@@ -2,6 +2,7 @@ package com.example.ezetaptask.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
@@ -77,6 +78,9 @@ class MainActivity : AppCompatActivity() {
         val view = layoutInflater.inflate(R.layout.edittext_item, null)
         val editText = view.findViewById<EditText>(R.id.ed_label)
         editText.hint = uiItem.hint
+        if (uiItem.key == "text_phone") {
+            editText.inputType = InputType.TYPE_CLASS_PHONE
+        }
         editText.addTextChangedListener {
             uiItem.key?.let { it1 -> map[it1] = it.toString() }
         }
