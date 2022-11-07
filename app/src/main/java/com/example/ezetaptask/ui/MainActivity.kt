@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
     private fun createEditText(uiItem: CustomUIResponse.Uidata) {
         val view = layoutInflater.inflate(R.layout.edittext_item, null)
         val editText = view.findViewById<EditText>(R.id.ed_label)
-        editText.hint = uiItem.value
+        editText.hint = uiItem.hint
         editText.addTextChangedListener {
             uiItem.key?.let { it1 -> map[it1] = it.toString() }
         }
