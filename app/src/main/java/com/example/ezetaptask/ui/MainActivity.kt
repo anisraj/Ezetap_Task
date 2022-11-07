@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import com.example.ezetaptask.R
 import com.example.ezetaptask.databinding.ActivityMainBinding
 import com.example.network.model.CustomUIResponse
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,24 +18,14 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
-    private lateinit var params: LinearLayout.LayoutParams
-    private lateinit var linearLayout: LinearLayout
     private val map = HashMap<String, String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initRenderingBaseData()
         subscribeApiError()
         subscribeCustomUIResponse()
         fetchCustomUI()
-    }
-
-    private fun initRenderingBaseData() {
-        //Create params for views---------------
-        params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        linearLayout = LinearLayout(this)
-        linearLayout.orientation = LinearLayout.VERTICAL
     }
 
     private fun fetchCustomUI() {
@@ -68,38 +59,37 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-            val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
-                ActionBar.LayoutParams.FILL_PARENT,
-                ActionBar.LayoutParams.WRAP_CONTENT
-            )
             binding.progressBar.visibility = View.GONE
-            this.addContentView(linearLayout, layoutParams)
         }
     }
 
     private fun createTextView(uiItem: CustomUIResponse.Uidata) {
-        val textView = TextView(this)
-        textView.text = uiItem.value
-        textView.layoutParams = params
-        linearLayout.addView(textView)
+        val view = layoutInflater.inflate(R.layout.textview_item, null)
+        val header = view.findViewById<TextView>(R.id.tv_label)
+        header.text = uiItem.value
+
+        binding.llContainer.addView(view)
     }
 
     private fun createEditText(uiItem: CustomUIResponse.Uidata) {
-        val editText = EditText(this)
-        editText.hint = uiItem.hint
-        editText.layoutParams = params
+        val view = layoutInflater.inflate(R.layout.edittext_item, null)
+        val editText = view.findViewById<EditText>(R.id.ed_label)
+        editText.hint = uiItem.value
         editText.addTextChangedListener {
             uiItem.key?.let { it1 -> map[it1] = it.toString() }
         }
-        linearLayout.addView(editText)
+
+        binding.llContainer.addView(view)
     }
 
     private fun createButton(uiItem: CustomUIResponse.Uidata) {
-        val button = Button(this)
-        button.text = uiItem.value
-        button.layoutParams = params
-        linearLayout.addView(button)
-        button.setOnClickListener {
+        val view = layoutInflater.inflate(R.layout.button_item, null)
+        val btn = view.findViewById<TextView>(R.id.button)
+        btn.text = uiItem.value
+
+        binding.llContainer.addView(view)
+
+        btn.setOnClickListener {
             val intent = Intent(this, SecondActivity::class.java)
             intent.putExtra("MAP", map)
             startActivity(intent)
