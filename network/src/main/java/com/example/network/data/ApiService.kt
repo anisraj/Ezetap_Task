@@ -9,6 +9,4 @@ interface ApiService {
     @GET("/mobileapps/android_assignment")
     suspend fun fetchCustomUI(): Response<CustomUIResponse>
 
-    @GET("/mobileapps/android_assignment")
-    suspend fun fetchImage(): Response<CustomUIResponse>
 }
