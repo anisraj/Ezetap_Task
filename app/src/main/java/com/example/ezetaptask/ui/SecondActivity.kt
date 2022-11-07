@@ -13,43 +13,24 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SecondActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySecondBinding
-    private lateinit var params: LinearLayout.LayoutParams
-    private lateinit var linearLayout: LinearLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySecondBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initRenderingBaseData()
         getIntentData()
-    }
-
-    private fun initRenderingBaseData() {
-        //Create params for views---------------
-        params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        linearLayout = LinearLayout(this)
-        linearLayout.orientation = LinearLayout.VERTICAL
     }
 
     private fun getIntentData() {
         val uiMap = intent.getSerializableExtra("MAP") as HashMap<String, String>
         for (item in uiMap) {
-            val horizontalLinearLayout = LinearLayout(this)
-            horizontalLinearLayout.orientation = LinearLayout.HORIZONTAL
+            val view = layoutInflater.inflate(R.layout.acitivity_second_item, null)
+            val header = view.findViewById<TextView>(R.id.tv_label)
+            val value =  view.findViewById<TextView>(R.id.tv_value)
 
-            val textView = TextView(this)
-            textView.text = item.key + " : "
-            horizontalLinearLayout.addView(textView)
+            header.text = item.key + " : "
+            value.text = item.value
 
-            val tvValue = TextView(this)
-            tvValue.text = item.value
-            horizontalLinearLayout.addView(tvValue)
-
-            linearLayout.addView(horizontalLinearLayout)
+            binding.llContainer.addView(view)
         }
-        val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
-            ActionBar.LayoutParams.FILL_PARENT,
-            ActionBar.LayoutParams.WRAP_CONTENT
-        )
-        this.addContentView(linearLayout, layoutParams)
     }
 }
