@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import com.bumptech.glide.Glide
 import com.example.ezetaptask.R
 import com.example.ezetaptask.databinding.ActivityMainBinding
 import com.example.network.model.CustomUIResponse
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun subscribeCustomUIResponse() {
         viewModel.routeCustomUIResponse.observe(this) {
+            updateEzetapLogo(it.logoUrl)
             renderUI(it.uidata)
         }
     }
@@ -93,6 +95,14 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SecondActivity::class.java)
             intent.putExtra("MAP", map)
             startActivity(intent)
+        }
+    }
+
+    private fun updateEzetapLogo(logoUrl: String?) {
+        if (!logoUrl.isNullOrEmpty() && logoUrl.isNotBlank()) {
+            Glide.with(binding.ivEzetap.context)
+                .load(logoUrl)
+                .into(binding.ivEzetap)
         }
     }
 }
