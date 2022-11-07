@@ -27,7 +27,7 @@ class SecondActivity : AppCompatActivity() {
             val header = view.findViewById<TextView>(R.id.tv_label)
             val value =  view.findViewById<TextView>(R.id.tv_value)
 
-            header.text = item.key + " : "
+            header.text = item.key.substring(item.key.lastIndexOf("_") + 1).uppercase() + " : "
             value.text = item.value
 
             binding.llContainer.addView(view)
